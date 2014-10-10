@@ -25,6 +25,7 @@ class User {
 	// extend to include other attributes, i.e. locale, timezone, etc
 
     static constraints = {
+		
     }
 
 	static mapping = {
@@ -127,7 +128,6 @@ class User {
 	}
 
 	int updateAttribute(key, value) {
-		println "key: $key, value: $value"
 		if (this.hasProperty(key)) {
 			this.setProperty(key, value)
 			return 1
