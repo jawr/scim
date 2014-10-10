@@ -1,23 +1,39 @@
 package scim
-import grails.transaction.*
-import static org.springframework.http.HttpStatus.*
-import static org.springframework.http.HttpMethod.*
 
 class UserController {
 
 	// GET
 	def show() {
-		def user = User.get(params.id)
-		if (user) {
+		if (params.id) {
+			def user = User.get(params.id)
+			if (user) {
+				render(
+					status: 200,
+					text: user.toJSON()
+				)
+			}
 			render(
-				status: 200,
-				text: user.toJSON()
+				status: 404,
+				text: "No User found with that ID."
 			)
+		} else {
+			def users = User.list()
+			if (users.size() > 0) {
+				def usersParsed = []
+				users.each() {
+					usersParsed.add(it.toJSON())
+				}
+				render(
+					status: 200,
+					text: usersParsed
+				)
+			} else {
+				render(
+					status: 404,
+					text: "No users found."
+				)
+			}
 		}
-		render(
-			status: 404,
-			text: "No User found with that ID."
-		)
 	}
 
 	// POST
@@ -49,7 +65,6 @@ class UserController {
 	// this method; if a field is missing in the request body, it is not removed
 	// from the underlying object
 	def update() {
-		println "ERROR?!"
 		def user = User.get(params.id)
 		if (user) {
 			// what to do if nothing updated?
@@ -66,4 +81,27 @@ class UserController {
 		)
 	}
 
+	// DELETE
+	def remove() {
+		def user = User.get(params.id)
+		if (user) {
+			try {
+				user.delete(flush: true)
+				render(
+					status: 200,
+					text: ''
+				)
+			} 
+			catch (org.springframework.dao.DataIntegrityViolationException e) {
+				render(
+					status: 500,
+					text: "Error. Unable to delete User." // improve
+				)
+			}
+		}
+		render(
+			status: 404,
+			text: "No User found with that ID."
+		)
+	}
 }

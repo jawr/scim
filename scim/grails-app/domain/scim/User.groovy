@@ -3,6 +3,8 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
 class User {
+	Long id
+	Long version
 	String userName
 	// GRAILS handles these
 	Date dateCreated
@@ -64,6 +66,7 @@ class User {
 
 	Map toMap() {
 		def json = [:]
+		json["id"] = id
 		json["userName"] = userName
 		json["meta"] = [
 			"created": dateCreated,
@@ -105,15 +108,15 @@ class User {
 		return builder.toString()
 	}
 
-	int updateFromJSON(json) {
+	int updateFromJSON(result) {
 		// need to handle versioning better
-		def slurper = new JsonSlurper()
-		def result = slurper.parseText(json)
+		// def slurper = new JsonSlurper()
+		// def result = slurper.parseText(json)
 		def updated = 0
-		result.each {
+		result.each() {
 			key, value ->
 				if (key == "name") {
-					value.each {
+					value.each() {
 						k, v ->
 							updated += updateAttribute(k, v)
 					}
