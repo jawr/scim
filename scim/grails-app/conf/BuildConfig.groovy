@@ -61,6 +61,7 @@ grails.project.dependency.resolution = {
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.7'
         compile ":asset-pipeline:1.9.6"
+		compile ":angularjs:1.0.0"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate4:4.3.5.5" // or ":hibernate:3.6.10.17"
@@ -72,5 +73,14 @@ grails.project.dependency.resolution = {
         //compile ":less-asset-pipeline:1.10.0"
         //compile ":coffee-asset-pipeline:1.8.0"
         //compile ":handlebars-asset-pipeline:1.3.0.3"
+
+		runtime ":twitter-bootstrap:3.2.0.2" // current: 3.2.0.2
     }
 }
+
+grails.plugin.angularjs.version = "1.2.23"
+grails.plugin.angularjs.i18n = ["en-gb"]
+grails.plugin.angularjs.modules = ["animate", "cookies", "loader", "mocks", "resource", "route", "sanitize", "touch"]
+grails.plugin.angularjs.resourcesDisposition = "head"
+grails.plugin.angularjs.resourcesNominify = true
+grails.plugin.angularjs.autoDownload = true
