@@ -1,9 +1,9 @@
 'use strict';
 
-var app = angular.module('scimControllers', ['ui.bootstrap']);
+var app = angular.module('scimControllers');
 
 app.controller('UsersCtrl',
-	function($rootScope, $scope, $modal, User) {
+	function($rootScope, $scope, User) {
         $scope.users = User.query();
         $rootScope.$on('update-users', function(ev, args) {
             $scope.users.push(args.user);
@@ -12,10 +12,7 @@ app.controller('UsersCtrl',
 );
 
 app.controller('UsersCreateCtrl',
-	function($rootScope, $scope, $routeParams, User) {
-		if ($routeParams.id) {
-			
-		}
+	function($rootScope, $scope, $routeParams, $timeout, User) {
 		$scope.user = new User();
 		$scope.created = false;
 		$scope.duplicate = false;
@@ -30,9 +27,11 @@ app.controller('UsersCreateCtrl',
 
 			User.save(user,	
 				function(data) {
-                    console.log(data);
 					$scope.created = true;
                     $rootScope.$broadcast('update-users', { user: data });
+                    $timeout(function() {
+                        $scope.created = false;
+                    }, 3000);
 				},
 				function(data) {
 					if (data.status === 409) {
@@ -48,7 +47,7 @@ app.controller('UsersCreateCtrl',
 );
 
 app.controller('UsersEditCtrl',
-	function($scope, $routeParams, $timeout, $location, User) {
+	function($scope, $routeParams, $timeout, $location, User, Group) {
         $scope.updated = false;
         $scope.serverError = false;
 		if ($routeParams.id) {
@@ -59,12 +58,16 @@ app.controller('UsersEditCtrl',
 		}
     
         $scope.update = function(user) {
+			$scope.$broadcast('show-errors-check-validity');
+			if ($scope.form.$invalid) { return }
+
             $scope.serverError = false;
             user.$update(function() {
                 $scope.updated = true;
+                $scope.user.password2 = $scope.user.password;
                 $timeout(function() {
                     $scope.updated = false;
-                }, 5000);
+                }, 3000);
             }, function(resp) {
                 $scope.serverError = true;
                 $scope.serverMsg = resp.data;
@@ -82,6 +85,26 @@ app.controller('UsersEditCtrl',
                 $scope.serverError = true;
                 $scope.serverMsg = resp.data;
             });
+        };
+
+        $scope.getGroup = function(val) {
+            return Group.query({displayName: val}).$promise.then(
+                function(resp) {
+                    return resp;
+                }
+            );
+        };
+
+        $scope.addGroup = function(user, group) {
+            if (!user.groups) { user.groups = [] }
+            user.groups.push({ value: group.id, display: group.displayName });
+        };
+
+        $scope.removeGroup = function(user, group) {
+            var idx = user.groups.indexOf(group);
+            if (idx >= 0) {
+                user.groups.splice(idx, 1);
+            }
         };
 	}
 );

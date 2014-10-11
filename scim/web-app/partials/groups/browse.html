@@ -1,0 +1,38 @@
+<h3>Browse</h3>
+<div ng-controller="GroupsEditCtrl">
+    <p ng-if="groups.length == 0">No Groups currently added.</p>
+    <div ng-if="groups.length > 0">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="glyphicon glyphicon-search"></i> Search
+                </h3>
+            </div>
+            <div class="panel-body">
+                <p>Enter your search query below. Currently only searches on Group Name using AngularJS's filter.</p>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Query" ng-model="query.displayName">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 200px">Group Name</th>
+                            <th style="width: 180px">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="group in groups | filter: query">
+                            <td><a href="#/groups/{{group.id}}">{{group.displayName}}</td>
+                            <td>{{group.meta.created | date:'MM/dd/yyyy @ h:mma'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

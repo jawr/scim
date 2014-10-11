@@ -22,6 +22,7 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li ng-class="{ active: isActive('/users')}"><a href="#/users">Users</a></li>
+							<li ng-class="{ active: isActive('/groups')}"><a href="#/groups">Groups</a></li>
 						</ul>
 					</div>
 				</div>

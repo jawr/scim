@@ -67,8 +67,8 @@ class UserController {
 		if (user) {
 			// what to do if nothing updated?
 			//def updated = user.updateFromJSON(request.JSON)
-			user.updateFromJSON(request.JSON)
-            if (user.save(flush: true)) {
+			def updated = user.updateFromJSON(request.JSON)
+            if (updated > 0) {
                 return render(
                     status: 200,
                     text: user.toJSON()

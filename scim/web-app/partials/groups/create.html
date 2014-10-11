@@ -1,0 +1,32 @@
+<h3>Create</h3>
+<div class="panel panel-default" ng-controller="GroupsCreateCtrl">
+	<div class="panel-body">
+		<div ng-show="created" class="alert alert-success" role="alert">
+			<b><i class="glyphicon glyphicon-ok"></i></b> Group <a href="#/groups/{{group.id}}">{{group.displayName}}</a> created.
+		</div>
+		<form role="form" name="form" novalidate>
+			<div class="form-group" show-errors='{showSuccess: true}'>
+				<label class="control-label">Group Name</label>
+				<input 
+					name="GroupName"
+					required
+					ng-minlength="5"
+					ng-model="Group.displayName"
+					placeholder="Enter Group Name"
+ 					type="text"
+					class="form-control" 
+					id="GroupName" 
+				/>
+				<p class="help-block" ng-if="form.GroupName.$error.minlength">User Name must be at least 5 character long.</p>
+			</div>
+			<hr>
+				<div ng-show="duplicate" class="alert alert-danger" role="alert">
+					<b><i class="glyphicon glyphicon-remove"></i> Error.</b> Group Name already exists.
+				</div>
+				<div ng-show="serverError" class="alert alert-danger" role="alert">
+					<b><i class="glyphicon glyphicon-remove"></i> Error.</b> Server was unable to complete process. {{ serverMsg }}
+				</div>
+			<button ng-click="create(Group)" class="btn btn-default btn-block">Submit</button>
+		</form>
+	</div>
+</div>

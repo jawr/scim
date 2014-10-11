@@ -1,0 +1,95 @@
+<form role="form" name="form" novalidate>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="glyphicon glyphicon-certificate"></i> General
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Created</th>
+                        <th>Last Modified</th>
+                        <th>Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{group.displayName}}</td>
+                        <td>{{group.meta.created | date:'MM/dd/yyyy @ h:mma'}}</td>
+                        <td>{{group.meta.lastModified | date:'MM/dd/yyyy @ h:mma'}}</td>
+                        <td>{{group.meta.version}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="glyphicon glyphicon-tags"></i> Schemas
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Schema</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="schema in group.schemas">
+                        <td>{{schema}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="glyphicon glyphicon-user"></i> Members
+            </h3>
+        </div>
+        <div class="panel-body">
+            <p ng-if="group.members.length == 0">No Users are members of this Group.</p>
+            <table class="table" ng-if="group.members.length > 0">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in group.members">
+                        <td><a href="/users/edit/{{user.value}}">{{user.display}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="alert alert-success" ng-if="deleted" role="alert">
+        <i class="glyphicon glyphicon-trash"></i> Deleted Group! Please wait to be redirected.
+    </div>
+
+    <div class="alert alert-success" ng-if="updated" role="alert">
+        <i class="glyphicon glyphicon-ok"></i> Updated Group!
+    </div>
+
+    <div class="alert alert-danger" ng-if="serverError" role="alert">
+        <i class="glyphicon glyphicon-remove"></i> Error. {{serverMsg}}
+    </div>
+
+    <button ng-click="delete(group)" class="btn btn-danger btn-block">Delete</button>
+
+    <br>
+    <br>
+
+</form>

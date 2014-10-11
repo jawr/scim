@@ -3,10 +3,14 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
 class User {
-	Long id
-	Long version
+
+    static hasMany = [groups:ScimGroup]    
+    static belongsTo = ScimGroup
+
 	String userName
 	// GRAILS handles these
+	Long id
+	Long version
 	Date dateCreated
 	Date lastUpdated
 	// spec specifies plain text password, not happy about this..
@@ -27,7 +31,7 @@ class User {
 	// extend to include other attributes, i.e. locale, timezone, etc
 
     static constraints = {
-		
+		userName unique: true
     }
 
 	static mapping = {
@@ -65,37 +69,46 @@ class User {
 	}
 
 	Map toMap() {
-		def json = [:]
-		json["id"] = id
-		json["userName"] = userName
-		json["meta"] = [
+		def map = [:]
+		map["id"] = id
+		map["userName"] = userName
+		map["meta"] = [
 			"created": dateCreated,
 			"lastModified": lastUpdated,
 			"version": version
 		]
 		if (externalID) {
-			json["externalID"] = externalID
+			map["externalID"] = externalID
 		}
 		if (password) {
-			json["password"] = password
+			map["password"] = password
 		}
 		if (nickName) {
-			json["nickName"] = nickName
+			map["nickName"] = nickName
 		}
 		if (profileURL) {
-			json["profileURL"] = profileURL
+			map["profileURL"] = profileURL
 		}
 		if (title) {
-			json["title"] = title
+			map["title"] = title
 		}
 		if (active) {
-			json["active"] = active
+			map["active"] = active
 		}
+        if (this.groups) {
+            map["groups"] = []
+            this.groups.each() {
+                map["groups"].add([
+                    value: it.id,
+                    display: it.displayName
+                ])
+            }
+        }
 		def name = name()
 		if (name.size() > 0) {
-			json["name"] = name
+			map["name"] = name
 		}
-		return json
+		return map
 	}
 
 	String toJSON() {
@@ -120,12 +133,25 @@ class User {
 						k, v ->
 							updated += updateAttribute(k, v)
 					}
+                } else if (key == "groups") {
+                    // inefficient
+                    if (this.groups) {
+                        this.groups.each() { group -> this.removeFromGroups(group) }
+                        this.groups.clear()
+                    }
+                    value.each() {
+                        def group = ScimGroup.get(it.value)
+                        if (group) {
+                            this.addToGroups(group)
+                            updated++
+                        }
+                    }
 				} else {
 					updated += updateAttribute(key, value)
 				}
 		}
 		if (updated > 0) {
-			this.save()
+			this.save(flush: true)
 		}
 		return updated
 	}

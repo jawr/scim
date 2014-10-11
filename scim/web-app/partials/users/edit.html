@@ -1,0 +1,272 @@
+<form role="form" name="form" novalidate>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="glyphicon glyphicon-certificate"></i> General
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Created</th>
+                        <th>Last Modified</th>
+                        <th>Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{user.userName}}</td>
+                        <td>{{user.meta.created | date:'MM/dd/yyyy @ h:mma'}}</td>
+                        <td>{{user.meta.lastModified | date:'MM/dd/yyyy @ h:mma'}}</td>
+                        <td>{{user.meta.version}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="glyphicon glyphicon-tags"></i> Schemas
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Schema</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="schema in user.schemas">
+                        <td>{{schema}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+                
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="glyphicon glyphicon-pencil"></i> Details
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Nick Name</label>
+                        <input 
+                            name="nickName"
+                            ng-model="user.nickName" 
+                            type="text" 
+                            class="form-control" 
+                            id="nickName" 
+                            placeholder="Enter User's Nick Name"
+                        />
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Profile URL</label>
+                        <input 
+                            name="profileURL"
+                            ng-model="user.profileURL" 
+                            type="text" 
+                            class="form-control" 
+                            id="profileURL" 
+                            placeholder="Enter User's Profile URL"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="glyphicon glyphicon-lock"></i> Security
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div ng-show="passwordMismatch" class="alert alert-danger" role="alert">
+                        <b><i class="glyphicon glyphicon-remove"></i> Error.</b> Passwords must match.
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Password</label>
+                        <input 
+                            name="password"
+                            required
+                            ng-minlength="5" 
+                            ng-model="user.password" 
+                            type="password" 
+                            class="form-control" 
+                            id="password" 
+                            placeholder="Enter User's new password"
+                        />
+                        <p class="help-block" ng-if="form.password.$error.minlength">Password must be at least 5 character long.</p>
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Re-Enter Password</label>
+                        <input 
+                            name="password2"
+                            required
+                            ng-minlength="5" 
+                            ng-model="user.password2" 
+                            type="password" 
+                            class="form-control" 
+                            id="password2" 
+                            placeholder="Re-Enter User's new password"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="glyphicon glyphicon-user"></i> Name
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Title</label>
+                        <input 
+                            name="title"
+                            ng-model="user.title" 
+                            type="text" 
+                            class="form-control" 
+                            id="title" 
+                            placeholder="Enter User's Title"
+                        />
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Given Name</label>
+                        <input 
+                            name="givenName"
+                            ng-model="user.name.givenName" 
+                            type="text" 
+                            class="form-control" 
+                            id="givenName" 
+                            placeholder="Enter User's Given Name"
+                        />
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Middle Name</label>
+                        <input 
+                            name="middleName"
+                            ng-model="user.name.middleName" 
+                            type="text" 
+                            class="form-control" 
+                            id="middleName" 
+                            placeholder="Enter User's Middle Name"
+                        />
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Family Name</label>
+                        <input 
+                            name="familyName"
+                            ng-model="user.name.familyName" 
+                            type="text" 
+                            class="form-control" 
+                            id="familyName" 
+                            placeholder="Enter User's Family Name"
+                        />
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Honorific Prefix Name</label>
+                        <input 
+                            name="honorificPrefix"
+                            ng-model="user.name.honorificPrefix" 
+                            type="text" 
+                            class="form-control" 
+                            id="honorificPrefix" 
+                            placeholder="Enter User's Honorific Prefix Name"
+                        />
+                    </div>
+                    <div class="form-group" show-errors='{showSuccess: true}'>
+                        <label class="control-label">Honorific Suffix Name</label>
+                        <input 
+                            name="honorificSuffix"
+                            ng-model="user.name.honorificSuffix" 
+                            type="text" 
+                            class="form-control" 
+                            id="honorificSuffix" 
+                            placeholder="Enter User's Honorific Suffix Name"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="glyphicon glyphicon-user"></i> Groups
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>Ensure you update these changes. Although they could be, they are not async.</p>
+                    <input 
+                        type="text"
+                        ng-model="groupSelected" 
+                        placeholder="Add User to Group" 
+                        typeahead="group.displayName for group in getGroup($viewValue)" 
+                        class="form-control"
+                        typeahead-on-select="addGroup(user, $item)"
+                    />
+                    <div ng-if="user.groups">
+                        <hr>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Group</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="group in user.groups">
+                                    <td><a href="#/groups/{{group.value}}">{{group.display}}</a></td>
+                                    <td>
+                                        <button ng-click="removeGroup(user, group)" class="btn btn-default btn-sm pull-right">Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <hr>
+
+    <div class="alert alert-success" ng-if="deleted" role="alert">
+        <i class="glyphicon glyphicon-trash"></i> Deleted User! Please wait to be redirected.
+    </div>
+
+    <div class="alert alert-success" ng-if="updated" role="alert">
+        <i class="glyphicon glyphicon-ok"></i> Updated User!
+    </div>
+
+    <div class="alert alert-danger" ng-if="serverError" role="alert">
+        <i class="glyphicon glyphicon-remove"></i> Error. {{serverMsg}}
+    </div>
+
+    <button ng-click="update(user)" class="btn btn-default btn-block">Update</button>
+    <button ng-click="delete(user)" class="btn btn-danger btn-block">Delete</button>
+
+    <br>
+    <br>
+</form>
+
