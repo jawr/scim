@@ -1,6 +1,11 @@
-<h3>Create User</h3>
+<h3>Create</h3>
 <div class="panel panel-default" ng-controller="UsersCreateCtrl">
-	<div class="panel-body">
+	<div ng-show="created" class="panel-body">
+		<div class="alert alert-success" role="alert" style="margin-bottom: 0">
+			<b><i class="glyphicon glyphicon-ok"></i></b> User {{ user.userName }} created.
+		</div>
+	</div>
+	<div ng-hide="created" class="panel-body">
 		<form role="form" name="form" novalidate>
 			<div class="form-group" show-errors='{showSuccess: true}'>
 				<label class="control-label">User Name</label>
@@ -17,7 +22,8 @@
 				<p class="help-block" ng-if="form.userName.$error.minlength">User Name must be at least 5 character long.</p>
 			</div>
 			<div ng-show="passwordMismatch" class="alert alert-danger" role="alert">
-				<b>Error.</b> Passwords must match.</div>
+				<b><i class="glyphicon glyphicon-remove"></i> Error.</b> Passwords must match.
+			</div>
 			<div class="form-group" show-errors='{showSuccess: true}'>
 				<label class="control-label">Password</label>
 				<input 
@@ -45,6 +51,13 @@
 					placeholder="Re-Enter User's password"
 				/>
 			</div>
+			<hr>
+				<div ng-show="duplicate" class="alert alert-danger" role="alert">
+					<b><i class="glyphicon glyphicon-remove"></i> Error.</b> User Name already exists.
+				</div>
+				<div ng-show="serverError" class="alert alert-danger" role="alert">
+					<b><i class="glyphicon glyphicon-remove"></i> Error.</b> Server was unable to complete process. {{ serverMsg }}
+				</div>
 			<hr>
 			<button ng-click="create(user)" class="btn btn-default btn-block">Submit</button>
 		</form>

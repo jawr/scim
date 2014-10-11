@@ -4,7 +4,8 @@ var app = angular.module('scim', [
 	'ngRoute',
  	'ui.bootstrap',
 	'scimControllers',
-	'scimDirectives'
+	'scimDirectives',
+	'scimServices'
 ]);
 
 app.config(function($routeProvider) {
@@ -12,6 +13,10 @@ app.config(function($routeProvider) {
 		.when('/users', {
 			templateUrl: 'partials/users.html',
 			controller: 'UsersCtrl'
+		})
+		.when('/users/:id', {
+			templateUrl: 'partials/users.edit.html',
+			controller: 'UsersEditCtrl'
 		})
 		.when('/', {
 			templateUrl: 'partials/index.html'
