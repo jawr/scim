@@ -1,21 +1,24 @@
 <h3>Browse</h3>
-<div class="panel panel-default" ng-controller="UsersCtrl">
-	<div class="panel-body">
-		<table class="table">
-			<thead>
-				<tr>
-					<th style="width: 200px">User Name</th>
-					<th>Name</th>
-					<th style="width: 160px">Created</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="user in users">
-					<td><a href="#/users/{{user.id}}">{{user.userName}}</td>
-					<td>{{user.name.formatted}}</td>
-					<td>{{user.meta.created | date:'MM/dd/yyyy @ h:mma'}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+<div ng-controller="UsersEditCtrl">
+    <p ng-if="users.length == 0">No Users currently added.</p>
+    <div class="panel panel-default" ng-if="users.length > 0">
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 200px">User Name</th>
+                        <th>Name</th>
+                        <th style="width: 160px">Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users">
+                        <td><a href="#/users/{{user.id}}">{{user.userName}}</td>
+                        <td>{{user.name.formatted}}</td>
+                        <td>{{user.meta.created | date:'MM/dd/yyyy @ h:mma'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

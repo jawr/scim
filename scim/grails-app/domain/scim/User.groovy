@@ -10,14 +10,14 @@ class User {
 	Date dateCreated
 	Date lastUpdated
 	// spec specifies plain text password, not happy about this..
-	String externalId = ""
+	String externalID = ""
 	String password = ""
 	String nickName = ""
 	String profileURL = ""
-	String title = ""
 	Boolean active = ""
 
 	// name:
+	String title = ""
 	String familyName = ""
 	String givenName = ""
 	String middleName = ""
@@ -73,8 +73,8 @@ class User {
 			"lastModified": lastUpdated,
 			"version": version
 		]
-		if (externalId) {
-			json["externalId"] = externalId
+		if (externalID) {
+			json["externalID"] = externalID
 		}
 		if (password) {
 			json["password"] = password

@@ -7,15 +7,15 @@ class UserController {
 		if (params.id) {
 			def user = User.get(params.id)
 			if (user) {
-				render(
+				return render(
 					status: 200,
 					text: user.toJSON()
 				)
-			}
-			render(
-				status: 404,
-				text: "No User found with that ID."
-			)
+            }
+            return render(
+                status: 404,
+                text: "No User found with that ID."
+            )   
 		} else {
 			def users = User.list()
 			if (users.size() > 0) {
@@ -23,40 +23,38 @@ class UserController {
 				users.each() {
 					usersParsed.add(it.toJSON())
 				}
-				render(
+				return render(
 					status: 200,
 					text: usersParsed
 				)
-			} else {
-				render(
-					status: 404,
-					text: "No users found."
-				)
-			}
+            }
+			return render(
+                status: 404,
+                text: "No users found."
+            )
 		}
 	}
 
 	// POST
 	def save() {	
 		if (User.countByUserName(request.JSON.userName) > 0) {
-			render(
+			return render(
 				status: 409,
 				text: "User with that userName already exists."
 			)
 		}
 		def user = new User(request.JSON)
-		if (user.save()) {
+		if (user.save(flush: true)) {
 			// take advantage of our own renderer (yet to be made)
-			render(
+			return render(
 				status: 201,
 				text: user.toJSON()
 			)
-		} else {
-			render(
-				status: 500,
-				text: "Error. Unable to save new User." // more info
-			)
 		}
+        return render(
+            status: 500,
+            text: "Error. Unable to save new User." // more info
+        )
 	}
 
 	// PUT
@@ -70,12 +68,18 @@ class UserController {
 			// what to do if nothing updated?
 			//def updated = user.updateFromJSON(request.JSON)
 			user.updateFromJSON(request.JSON)
-			render(
-				status: 200,
-				text: user.toJSON()
-			)
+            if (user.save(flush: true)) {
+                return render(
+                    status: 200,
+                    text: user.toJSON()
+                )
+            }
+            return render(
+                status: 500,
+                text: "Error. Unable to save User." // more info
+            )
 		}
-		render(
+		return render(
 			status: 404,
 			text: "No User found with that ID."
 		)
@@ -87,7 +91,7 @@ class UserController {
 		if (user) {
 			try {
 				user.delete(flush: true)
-				render(
+				return render(
 					status: 200,
 					text: ''
 				)
@@ -99,7 +103,7 @@ class UserController {
 				)
 			}
 		}
-		render(
+		return render(
 			status: 404,
 			text: "No User found with that ID."
 		)

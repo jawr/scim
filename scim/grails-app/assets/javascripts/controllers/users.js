@@ -3,15 +3,16 @@
 var app = angular.module('scimControllers', ['ui.bootstrap']);
 
 app.controller('UsersCtrl',
-	function($scope, $modal, User) {
-		User.query(function(result) {
-			$scope.users = result;
-		});
+	function($rootScope, $scope, $modal, User) {
+        $scope.users = User.query();
+        $rootScope.$on('update-users', function(ev, args) {
+            $scope.users.push(args.user);
+        });
 	}
 );
 
 app.controller('UsersCreateCtrl',
-	function($scope, $routeParams, User) {
+	function($rootScope, $scope, $routeParams, User) {
 		if ($routeParams.id) {
 			
 		}
@@ -28,8 +29,10 @@ app.controller('UsersCreateCtrl',
 			if ($scope.form.$invalid) { return }
 
 			User.save(user,	
-				function() {
+				function(data) {
+                    console.log(data);
 					$scope.created = true;
+                    $rootScope.$broadcast('update-users', { user: data });
 				},
 				function(data) {
 					if (data.status === 409) {
@@ -45,13 +48,40 @@ app.controller('UsersCreateCtrl',
 );
 
 app.controller('UsersEditCtrl',
-	function($scope, $routeParams, $modal, User) {
+	function($scope, $routeParams, $timeout, $location, User) {
+        $scope.updated = false;
+        $scope.serverError = false;
 		if ($routeParams.id) {
-			$scope.user = User.get({id: $routeParams.id});
+			$scope.user = User.get({id: $routeParams.id}, function() {
+                // other init
+                $scope.user.password2 = $scope.user.password;
+            });
 		}
+    
+        $scope.update = function(user) {
+            $scope.serverError = false;
+            user.$update(function() {
+                $scope.updated = true;
+                $timeout(function() {
+                    $scope.updated = false;
+                }, 5000);
+            }, function(resp) {
+                $scope.serverError = true;
+                $scope.serverMsg = resp.data;
+            });
+        };
 
-		$modal.open({
-			templateUrl: 'users.edit.modal.html'
-		});
+        $scope.delete = function(user) {
+            $scope.serverError = false;
+            user.$delete(function() {
+                $scope.deleted = true;
+                $timeout(function() {
+                    $location.path('/users');
+                }, 3000);
+            }, function(resp) {
+                $scope.serverError = true;
+                $scope.serverMsg = resp.data;
+            });
+        };
 	}
 );
