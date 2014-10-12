@@ -11,22 +11,22 @@ class ScimGroupController {
 					status: 200,
 					text: group.toJSON()
 				)
-            }
-            return render(
-                status: 404,
-                text: "No Group found with that ID."
-            )   
+            		}
+            		return render(
+                		status: 404,
+                		text: "No Group found with that ID."
+            		)   
 		} else {
 			def groups = []
-            // check this against spec/implement spec's filters
-            if (params.displayName) {
-                def search = params.displayName.replaceAll(" ", "%")
-                groups = ScimGroup.findAllByDisplayNameLike(
-                    "%" + search + "%"
-                )
-            } else {
-                groups = ScimGroup.list()
-            }
+            		// check this against spec/implement spec's filters
+            		if (params.displayName) {
+        			def search = params.displayName.replaceAll(" ", "%")
+        		    	groups = ScimGroup.findAllByDisplayNameLike(
+                    			"%" + search + "%"
+                		)
+            		} else {
+                		groups = ScimGroup.list()
+            		}
 			if (groups.size() > 0) {
 				def groupsParsed = []
 				groups.each() {
@@ -36,11 +36,11 @@ class ScimGroupController {
 					status: 200,
 					text: groupsParsed
 				)
-            }
+            		}
 			return render(
-                status: 404,
-                text: "No Groups found."
-            )
+                		status: 404,
+                		text: "No Groups found."
+            		)
 		}
 	}
 
@@ -77,16 +77,16 @@ class ScimGroupController {
 			// what to do if nothing updated?
 			//def updated = group.updateFromJSON(request.JSON)
 			def updated = group.updateFromJSON(request.JSON)
-            if (updated > 0) {
-                return render(
-                    status: 200,
-                    text: group.toJSON()
-                )
-            }
-            return render(
-                status: 500,
-                text: "Error. Unable to save Group." // more info
-            )
+            		if (updated > 0) {
+                		return render(
+                    			status: 200,
+                    			text: group.toJSON()
+                		)
+            		}
+            		return render(
+                		status: 500,
+                		text: "Error. Unable to save Group." // more info
+            		)
 		}
 		return render(
 			status: 404,
