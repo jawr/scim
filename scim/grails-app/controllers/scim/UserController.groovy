@@ -11,11 +11,11 @@ class UserController {
 					status: 200,
 					text: user.toJSON()
 				)
-            }
-            return render(
-                status: 404,
-                text: "No User found with that ID."
-            )   
+            		}
+            		return render(
+                		status: 404,
+                		text: "No User found with that ID."
+            		)   
 		} else {
 			def users = User.list()
 			if (users.size() > 0) {
@@ -27,11 +27,11 @@ class UserController {
 					status: 200,
 					text: usersParsed
 				)
-            }
+            		}
 			return render(
-                status: 404,
-                text: "No users found."
-            )
+                		status: 404,
+                		text: "No users found."
+            		)
 		}
 	}
 
@@ -51,10 +51,10 @@ class UserController {
 				text: user.toJSON()
 			)
 		}
-        return render(
-            status: 500,
-            text: "Error. Unable to save new User." // more info
-        )
+        	return render(
+            		status: 500,
+            		text: "Error. Unable to save new User." // more info
+        	)
 	}
 
 	// PUT
@@ -68,16 +68,16 @@ class UserController {
 			// what to do if nothing updated?
 			//def updated = user.updateFromJSON(request.JSON)
 			def updated = user.updateFromJSON(request.JSON)
-            if (updated > 0) {
-                return render(
-                    status: 200,
-                    text: user.toJSON()
-                )
-            }
-            return render(
-                status: 500,
-                text: "Error. Unable to save User." // more info
-            )
+            		if (updated > 0) {
+                		return render(
+                    			status: 200,
+                    			text: user.toJSON()
+                		)
+            		}
+            		return render(
+                		status: 500,
+                		text: "Error. Unable to save User." // more info
+            		)
 		}
 		return render(
 			status: 404,
