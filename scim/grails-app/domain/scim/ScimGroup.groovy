@@ -4,33 +4,33 @@ import groovy.json.JsonSlurper
 
 class ScimGroup {
 
-    static hasMany = [users:User]
+    	static hasMany = [users:User]
 
-    String displayName
+    	String displayName
 	// GRAILS handles these
 	Long id
 	Long version
 	Date dateCreated
 	Date lastUpdated
 
-    static constraints = {
-        displayName unique: true
-    }
+    	static constraints = {
+        	displayName unique: true
+    	}
 
 	static mapping = {
 		autoTimestamp true
 	}
 
-    List getMembers() {
-        def list = []
-        users.each() {
-            list.add([
-                value: it.id,
-                display: it.userName // perhaps formatted if available
-            ])
-        }
-        return list
-    }
+    	List getMembers() {
+        	def list = []
+        	users.each() {
+            		list.add([
+                		value: it.id,
+                		display: it.userName // perhaps formatted if available
+        	 	])
+        	}
+        	return list
+    	}
 
 	Map toMap() {
 		def map = [:]
@@ -41,9 +41,9 @@ class ScimGroup {
 			"lastModified": lastUpdated,
 			"version": version
 		]
-        map["members"] = getMembers()
-        return map
-    }
+        	map["members"] = getMembers()
+        	return map
+    	}
 
 	String toJSON() {
 		def builder = new JsonBuilder()
