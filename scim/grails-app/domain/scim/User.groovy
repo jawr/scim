@@ -4,8 +4,8 @@ import groovy.json.JsonSlurper
 
 class User {
 
-    static hasMany = [groups:ScimGroup]    
-    static belongsTo = ScimGroup
+    	static hasMany = [groups:ScimGroup]    
+    	static belongsTo = ScimGroup
 
 	String userName
 	// GRAILS handles these
@@ -30,9 +30,9 @@ class User {
 
 	// extend to include other attributes, i.e. locale, timezone, etc
 
-    static constraints = {
+    	static constraints = {
 		userName unique: true
-    }
+    	}
 
 	static mapping = {
 		autoTimestamp true
@@ -95,15 +95,15 @@ class User {
 		if (active) {
 			map["active"] = active
 		}
-        if (this.groups) {
-            map["groups"] = []
-            this.groups.each() {
-                map["groups"].add([
-                    value: it.id,
-                    display: it.displayName
-                ])
-            }
-        }
+        	if (this.groups) {
+            		map["groups"] = []
+            		this.groups.each() {
+                		map["groups"].add([
+                    			value: it.id,
+                    			display: it.displayName
+                		])
+            		}
+        	}
 		def name = name()
 		if (name.size() > 0) {
 			map["name"] = name
@@ -133,19 +133,19 @@ class User {
 						k, v ->
 							updated += updateAttribute(k, v)
 					}
-                } else if (key == "groups") {
-                    // inefficient
-                    if (this.groups) {
-                        this.groups.each() { group -> this.removeFromGroups(group) }
-                        this.groups.clear()
-                    }
-                    value.each() {
-                        def group = ScimGroup.get(it.value)
-                        if (group) {
-                            this.addToGroups(group)
-                            updated++
-                        }
-                    }
+                		} else if (key == "groups") {
+                    			// inefficient
+                    			if (this.groups) {
+                        			this.groups.each() { group -> this.removeFromGroups(group) }
+                        			this.groups.clear()
+                    			}
+                    			value.each() {
+                   				def group = ScimGroup.get(it.value)
+                        			if (group) {
+                        				this.addToGroups(group)
+                            				updated++
+                        			}
+                    			}
 				} else {
 					updated += updateAttribute(key, value)
 				}
