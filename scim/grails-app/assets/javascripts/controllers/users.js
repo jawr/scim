@@ -28,10 +28,11 @@ app.controller('UsersCreateCtrl',
 			User.save(user,	
 				function(data) {
 					$scope.created = true;
-                    $rootScope.$broadcast('update-users', { user: data });
-                    $timeout(function() {
-                        $scope.created = false;
-                    }, 3000);
+                                        $scope.user = data;
+                                        $rootScope.$broadcast('update-users', { user: data });
+                                        $timeout(function() {
+                                                $scope.created = false;
+                                        }, 3000);
 				},
 				function(data) {
 					if (data.status === 409) {

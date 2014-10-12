@@ -24,10 +24,11 @@ app.controller('GroupsCreateCtrl',
 			Group.save(group,	
 				function(data) {
 					$scope.created = true;
-                    $rootScope.$broadcast('update-groups', { group: data });
-                    $timeout(function() {
-                        $scope.created = false;
-                    }, 3000);
+                                        $scope.group = data;
+                                        $rootScope.$broadcast('update-groups', { group: data });
+                                        $timeout(function() {
+                                                $scope.created = false;
+                                        }, 3000);
 				},
 				function(data) {
 					if (data.status === 409) {

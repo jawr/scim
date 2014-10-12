@@ -3,7 +3,7 @@
 var app = angular.module('scimServices');
 
 app.factory('Group', function($resource) {
-	return $resource('/scim/scimGroup/:id', { id: '@id' },
+	return $resource('/scim/v1/scimGroup/:id', { id: '@id' },
         {
             update: { method: 'PUT' }
         }
